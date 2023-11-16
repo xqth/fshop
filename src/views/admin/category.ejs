@@ -1,0 +1,198 @@
+<% if (action === 'list') { %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">Categories</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="<%= adminUrl %>">Home</a></li>
+                    <li class="breadcrumb-item">Categories</li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                        <div class="search-box me-2 mb-2 d-inline-block">
+                            <div class="position-relative">
+                                <form action="<%= adminUrl %>/categories">
+                                    <input type="text" class="form-control" name="search" value="<%= search %>" placeholder="Search...">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="text-sm-end">
+                            <a class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" href="<%= adminUrl %>/categories/add">
+                                <i class="mdi mdi-plus me-1"></i> Add new category
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="check-all">
+                                        <label class="form-check-label" for="check-all"></label>
+                                    </div>
+                                </th>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Slug</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const category of categories) { %>
+                            <tr>
+                                <td>
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="category-check-<%= category.id %>">
+                                        <label class="form-check-label" for="category-check-<%= category.id %>"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-body fw-bold">#<%= category.id %></span>
+                                </td>
+                                <td><%= category.title %></td>
+                                <td><%= category.slug %></td>
+                                <td>
+                                    <div class="d-flex gap-3">
+                                        <a href="<%= adminUrl %>/categories/<%= category.id %>" class="text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit category">
+                                            <i class="mdi mdi-pencil font-size-18"></i>
+                                        </a>
+                                        <a href="<%= adminUrl %>/categories/<%= category.id %>" class="text-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete category">
+                                            <i class="mdi mdi-delete font-size-18"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% } if (!locals.categories.length) { %>
+                                <td class="text-center" colspan="5">Data empty!</td>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-sm-left">
+                            <button type="button" class="btn btn-danger btn-rounded waves-effect waves-light btn-delete-checked"><i class="bx bx-trash"></i> Delete selected categories</button>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <%- locals.categories.length ? paginations : '' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } else if (action === 'add') { %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Categories</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="<%= adminUrl %>">Home</a></li>
+                    <li class="breadcrumb-item">Categories</li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-request" action="<%= adminUrl %>/categories/add" method="POST">
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Title</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="title" placeholder="Enter title" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Slug</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="slug" placeholder="Enter slug" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Description</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="description" rows="5" placeholder="Enter description" required></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">Submit</button>
+                        <button type="reset" class="btn btn-secondary waves-effect">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% } else { %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Categories</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="<%= adminUrl %>">Home</a></li>
+                    <li class="breadcrumb-item">Categories</li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <% if (!locals.category) { %>
+                <span>Category not found!</span>
+                <% } else { %>
+                <form class="form-request" action="<%= adminUrl %>/categories/<%= category.id %>" method="PUT">
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Title</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="title" placeholder="Enter title" value="<%= category.title %>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Slug</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="slug" placeholder="Enter slug" value="<%= category.slug %>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Description</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="description" rows="5" placeholder="Enter description" required><%= category.description %></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">Submit</button>
+                        <button type="reset" class="btn btn-secondary waves-effect">Reset</button>
+                    </div>
+                </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

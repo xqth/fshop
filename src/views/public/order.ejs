@@ -1,0 +1,47 @@
+<main class="main-wrapper">
+    <div class="axil-product-cart-area axil-section-gap">
+        <div class="container">
+            <div class="axil-product-cart-wrap">
+                <div class="product-table-heading">
+                    <h4 class="title">Order #<%= order.id %> - <%= order.status[0].toUpperCase() + order.status.slice(1) %></h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table axil-product-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="product-thumbnail">Product</th>
+                                <th scope="col"></th>
+                                <th scope="col" class="product-price">Price</th>
+                                <th scope="col" class="product-quantity">Quantity</th>
+                                <th scope="col" class="product-subtotal">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const product of products) { %>
+                            <tr>
+                                <td class="product-thumbnail">
+                                    <a href="<%= baseUrl %>/products/<%= product.slug %>">
+                                        <img src="<%= product.thumb %>" alt="<%= product.title %>">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<%= baseUrl %>/products/<%= product.slug %>"><%= product.title %></a>
+                                </td>
+                                <td class="product-price">
+                                    <span class="currency-symbol">$</span><%= product.price %>
+                                </td>
+                                <td class="product-quantity">
+                                    <%= product.quantity %>
+                                </td>
+                                <td class="product-subtotal">
+                                    <span class="currency-symbol">$</span><%= (product.price * product.quantity).toFixed(2) %>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

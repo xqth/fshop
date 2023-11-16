@@ -1,0 +1,172 @@
+<% if (action === 'list') { %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">Categories</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="<%= adminUrl %>">Home</a></li>
+                    <li class="breadcrumb-item">Categories</li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="check-all">
+                                        <label class="form-check-label" for="check-all"></label>
+                                    </div>
+                                </th>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Payment method</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const order of orders) { %>
+                            <tr>
+                                <td>
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="order-check-<%= order.id %>">
+                                        <label class="form-check-label" for="order-check-<%= order.id %>"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-body fw-bold">#<%= order.id %></span>
+                                </td>
+                                <td><%= order.user.email %></td>
+                                <td><%= order.createdAt.toLocaleDateString('en-US') %></td>
+                                <td><%= order.status[0].toUpperCase() + order.status.slice(1) %></td>
+                                <td><%= order.payment.method[0].toUpperCase() + order.payment.method.slice(1) %></td>
+                                <td>$<%= order.payment.amount.toFixed(2) %></td>
+                                <td>
+                                    <div class="d-flex gap-3">
+                                        <a href="<%= adminUrl %>/orders/<%= order.id %>" class="text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit order">
+                                            <i class="mdi mdi-pencil font-size-18"></i>
+                                        </a>
+                                        <a href="<%= adminUrl %>/orders/<%= order.id %>" class="text-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete order">
+                                            <i class="mdi mdi-delete font-size-18"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% } if (!locals.orders.length) { %>
+                                <td class="text-center" colspan="5">Data empty!</td>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-sm-left">
+                            <button type="button" class="btn btn-danger btn-rounded waves-effect waves-light btn-delete-checked"><i class="bx bx-trash"></i> Delete selected orders</button>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <%- locals.orders.length ? paginations : '' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } else { %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Orders</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="<%= adminUrl %>">Home</a></li>
+                    <li class="breadcrumb-item">Orders</li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <% if (!locals.order) { %>
+                <span>Order not found!</span>
+                <% } else { %>
+                <form class="form-request" action="<%= adminUrl %>/orders/<%= order.id %>" method="PUT">
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">User</label>
+                        <div class="col-md-10 col-form-label">
+                            <input type="text" class="form-control" value="<%= order.user.email %>" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Payment method</label>
+                        <div class="col-md-10 col-form-label">
+                            <input type="text" class="form-control" value="<%= order.payment.method[0].toUpperCase() + order.payment.method.slice(1) %>" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Order amount</label>
+                        <div class="col-md-10 col-form-label">
+                            <input type="text" class="form-control" value="$<%= order.payment.amount.toFixed(2) %>" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Products</label>
+                        <div class="col-md-10 col-form-label">
+                            <%
+                                for (let i = 0; i < products.length; i++) {
+                                    const product = products[i]; 
+                            %>
+                            <div class="card">
+                                <div class="row no-gutters" style="padding: 20px;">
+                                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                        <img src="<%= product.thumb %>" class="card-img" alt="<%= product.title %>">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="card-body">
+                                        <h5 class="card-title"><%= product.title %></h5>
+                                        <p class="card-text">Price: $<%= product.price %></p>
+                                        <p class="card-text">Quantity: <%= product.quantity %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-md-2 col-form-label">Order status</label>
+                        <div class="col-md-10">
+                            <select class="form-control" name="status" required>
+                                <% for (const status of ['pending','processing','completed','cancelled']) { %>
+                                <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status[0].toUpperCase() + status.slice(1) %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">Submit</button>
+                        <button type="reset" class="btn btn-secondary waves-effect">Reset</button>
+                    </div>
+                </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
